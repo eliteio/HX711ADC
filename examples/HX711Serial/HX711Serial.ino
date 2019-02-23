@@ -8,6 +8,7 @@ HX711ADC scale(A1, A0);		// parameter "gain" is ommited; the default value 128 i
 void setup() {
   Serial.begin(38400);
   Serial.println("HX711 Demo");
+  scale.begin();
 
   Serial.println("Before setting up the scale:");
   Serial.print("read: \t\t");

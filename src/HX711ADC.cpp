@@ -1,7 +1,21 @@
 #include "HX711ADC.h"
 
-HX711ADC::HX711ADC(byte dout, byte pd_sck, byte gain) {
-	begin(dout, pd_sck, gain);
+HX711ADC::HX711ADC(byte dout, byte pd_sck, byte gain) :
+  PD_SCK(pd_sck), DOUT(dout) {
+	switch (gain) {
+		case 128:		// channel A, gain factor 128
+			GAIN = 1;
+			break;
+		case 64:		// channel A, gain factor 64
+			GAIN = 3;
+			break;
+		case 32:		// channel B, gain factor 32
+			GAIN = 2;
+			break;
+    default:
+      GAIN = 1;
+      break;
+	}
 }
 
 HX711ADC::HX711ADC() {
@@ -10,14 +24,18 @@ HX711ADC::HX711ADC() {
 HX711ADC::~HX711ADC() {
 }
 
-void HX711ADC::begin(byte dout, byte pd_sck, byte gain) {
-	PD_SCK = pd_sck;
-	DOUT = dout;
-
+void HX711ADC::begin() {
 	pinMode(PD_SCK, OUTPUT);
 	pinMode(DOUT, INPUT);
+	digitalWrite(PD_SCK, LOW);
+}
 
-	set_gain(gain);
+void HX711ADC::begin(byte dout, byte pd_sck, byte gain) {
+ 	PD_SCK = pd_sck;
+	DOUT = dout;
+	pinMode(PD_SCK, OUTPUT);
+	pinMode(DOUT, INPUT);
+  set_gain(gain);
 }
 
 void HX711ADC::set_gain(byte gain) {
@@ -31,6 +49,9 @@ void HX711ADC::set_gain(byte gain) {
 		case 32:		// channel B, gain factor 32
 			GAIN = 2;
 			break;
+    default:
+      GAIN = 1;
+      break;
 	}
 
 	digitalWrite(PD_SCK, LOW);

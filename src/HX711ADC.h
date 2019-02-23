@@ -31,6 +31,8 @@ class HX711ADC
 		virtual ~HX711ADC();
 
 		// Allows to set the pins and gain later than in the constructor
+  
+    void begin();
 		void begin(byte dout, byte pd_sck, byte gain = 128);
 
 		// check if HX711 is ready
